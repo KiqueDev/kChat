@@ -1,0 +1,64 @@
+<head>
+  <title>kChat</title>
+</head>
+
+<body>
+  {{> lobby}}
+</body>
+
+<template name="lobby">
+  <div>
+
+      <div id="lobby">
+      {{#if logged_out}}
+        <h1>Lobby</h1>
+      {{else}}
+        <h1>Room</h1>
+      {{/if}}
+
+      {{#if count}}
+        <h1>{{count}} Online Now</h1>
+      {{#each waiting }}
+        <div class="user">{{name}}</div>
+      {{/each}}
+      {{/if}}
+
+      <br/>
+      {{#if logged_out}}
+        <div id="logfield">
+          <h2>Enter Your Username?</h2>
+          <input id="myname" type="text" />
+          <button id="login">Login</button>
+        </div>
+        <div id="whoIsOn">
+          {{#if count}}
+            Yay! Someone is On...
+          {{else}}
+            <br/>
+            Please Wait...
+          {{/if}}
+        </div>
+      {{else}}
+        <div>
+          <button id="logout">Logout</button>
+          <div id="textAreaDiv">
+            <textarea rows="15" cols="60" id="mainTextArea" readonly="true"></textarea>
+          </div>
+        <br/>
+        <div id="sendDiv">
+          <textarea rows="5" cols="50" id="messageTextArea"></textarea>
+          <button id="sendMessage" class="sendMessageClass">Send</button>
+        </div>
+        </div>
+
+      {{/if}}
+
+
+    </div>
+  </div>
+</template>
+
+
+
+
+

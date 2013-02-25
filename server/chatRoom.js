@@ -1,16 +1,48 @@
 ////////// Server only logic //////////
+Meteor.publish("chatRooms", function(){
+   return Rooms.find({});
+});
+Meteor.publish("users", function(){
+
+   return Meteor.users.find({});
+});
+Meteor.publish("messages", function(){
+
+   return Messages.find({});
+});
+
+Meteor.users.allow({
+   remove: function () { return true; }, 
+   insert: function () { return true; }, 
+   update: function () {return true; }
+});
 
 
-Meteor.methods({
 
-	
-   // keepalive: function (user_id) {
-   //       Players.update({_id: player_id},
-   //                  {$set: {last_keepalive: (new Date()).getTime(),
-   //                          idle: false}});
-   // }
+// Meteor.methods({
+//    addField: function () {
+//          console.log(Meteor.users.find().fetch());
+//    }
+//    // keepalive: function (user_id) {
+//    //       Players.update({_id: player_id},
+//    //                  {$set: {last_keepalive: (new Date()).getTime(),
+//    //                          idle: false}});
+//    // }
 
-})
+// });
+
+Accounts.onCreateUser(function(options, user) {
+  
+  user.Room = {"inRoom":false, "inRoomID":"", "inRoomTitle":""};
+  // user.inRoomID = '';
+  // user.inRoomTitle = '';
+  // We still want the default hook's 'profile' behavior.
+  if (options.profile)
+    user.profile = options.profile;
+  return user;
+});
+
+
 
 // Meteor.setInterval(function () {
 //   var now = (new Date()).getTime();

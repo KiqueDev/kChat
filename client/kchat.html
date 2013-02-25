@@ -3,62 +3,78 @@
 </head>
 
 <body>
-  {{> lobby}}
+  {{> page}}
 </body>
 
-<template name="lobby">
-  <div>
+<template name="main">
+  <div style="float:left">
+    <h1>Welcome To kChat</h1>
+      <div>
+        {{#if currentUser}}
+          <h2>Lobby</h2>
 
-      <div id="lobby">
-      {{#if logged_out}}
-        <h1>Lobby</h1>
-      {{else}}
-        <h1>Room</h1>
-      {{/if}}
-
-      {{#if count}}
-        <h1>{{count}} Online Now</h1>
-      {{#each waiting }}
-        <div class="user">{{name}}</div>
-      {{/each}}
-      {{/if}}
-
-      <br/>
-      {{#if logged_out}}
-        <div id="logfield">
-          <h2>Enter Your Username?</h2>
-          <input id="myname" type="text" />
-          <button id="login">Login</button>
-        </div>
-        <div id="whoIsOn">
-          {{#if count}}
-            Yay! Someone is On...
-          {{else}}
+          <div>
+            <h3>Create Room</h3>
+            Room Title:<input type="text" id="roomTitle"/>
             <br/>
-            Please Wait...
-          {{/if}}
-        </div>
-      {{else}}
-        <div>
-          <button id="logout">Logout</button>
-          <div id="textAreaDiv">
-            <textarea rows="15" cols="60" id="mainTextArea" readonly="true"></textarea>
+            <button type="button" id="createRoom"> New </button>
           </div>
-        <br/>
-        <div id="sendDiv">
-          <textarea rows="5" cols="50" id="messageTextArea"></textarea>
-          <button id="sendMessage" class="sendMessageClass">Send</button>
-        </div>
-        </div>
 
-      {{/if}}
+          {{#if roomCount}}
+            <h1>{{roomCount}} Available Rooms Now</h1>
+            {{#each waitingRoom }}
+              <div>
+                {{roomTitle}}
+                 <button type="button" class="joinRoom" roomId="{{_id}}" roomTitle="{{roomTitle}}"> Join </button>
+              </div>
+            {{/each}}
+          {{/if}}
 
+        {{else}}
 
-    </div>
+            {{#if roomCount}}
+            <h1>{{roomCount}} Available Rooms Now</h1>
+            {{#each waitingRoom }}
+              <div>
+                {{roomTitle}}
+              </div>
+            {{/each}}
+          {{/if}}
+
+        {{/if}}
+      </div>
   </div>
+
+  <div style="float:right">
+    {{loginButtons align="right"}}
+  </div>
+
 </template>
 
+<template name="room">
+  <div>
+      <h1>{{rTitle}}</h1>
+      <h6>{{rID}}</h6>
+      <h3>Chatting With:</h3>
+      {{ peopleInRoom }}
+      <br/>
+      <button id="goout" >Got Out of the Room</button>
+      <div id="textAreaDiv">
+         <textarea rows="15" cols="60" id="mainTextArea" readonly="true"></textarea>
+      </div>
+      <br/>
+      <div id="sendDiv">
+         <textarea rows="5" cols="50" id="messageTextArea"></textarea>
+         <button id="sendMessage" class="sendMessageClass">Send</button>
+      </div>
+  </div>
 
+</template>
 
-
-
+<template name="page">
+  {{#if inRoom}}
+    {{> room }}
+  {{else}}
+    {{> main}}
+  {{/if}}
+</template>

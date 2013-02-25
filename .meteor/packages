@@ -5,4 +5,5 @@
 
 insecure
 preserve-inputs
-autopublish
+accounts-password
+accounts-ui

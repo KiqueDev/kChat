@@ -58,9 +58,20 @@
       <h3>Chatting With:</h3>
       {{ peopleInRoom }}
       <br/>
-      <button id="goout" >Got Out of the Room</button>
+      <br/>
+      Messages:
+      <br/>
+
+        <div id="msgLog">
+        {{#each messageCount}}
+          <pre><bold>{{username}}</bold>:   {{ message }}</pre>
+        {{/each}}
+       </div>
 
       <br/>
+      <button id="goout" >Got Out of the Room</button>
+      <br/>
+
       <div id="sendDiv">
          <textarea rows="5" cols="50" id="messageTextArea"></textarea>
          <button id="sendMessage" class="sendMessageClass">Send</button>
@@ -78,10 +89,12 @@
   {{/if}}
 </template>
 
-<template name="messageLogs">
-    <div id="textAreaDiv">
-       <textarea rows="15" cols="60" id="mainTextArea" readonly="true"></textarea>
-    </div>
-</template>
+<!-- <template name="messageLogs">
+      <div id="mainMsgDiv">
+      Messages:
+        <ul id="msgBoard">
+        </ul>
+      </div>
+</template> -->
 
 

@@ -1,1 +1,6 @@
 /* CSS declarations go here */
+#msgLog{
+	overflow-y:auto;
+	height: 200px;
+	background:#cccccc;
+}

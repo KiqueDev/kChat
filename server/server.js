@@ -1,34 +1,31 @@
 ////////// Server only logic //////////
-Meteor.publish("chatRooms", function(){
+Meteor.publish("rooms", function(){
    return Rooms.find({});
 });
-Meteor.publish("users", function(){
-
-   return Meteor.users.find({});
-});
 Meteor.publish("messages", function(){
-
    return Messages.find({});
 });
-
-Meteor.users.allow({
-   remove: function () { return true; }, 
-   insert: function () { return true; }, 
-   update: function () {return true; }
+Meteor.publish("users", function() { 
+  return Meteor.users.find({}, {fields: {}});
 });
-
-
-
 
 Accounts.onCreateUser(function(options, user) {
   
   user.Room = {"inRoom":false, "inRoomID":"", "inRoomTitle":""};
-  // user.inRoomID = '';
-  // user.inRoomTitle = '';
   // We still want the default hook's 'profile' behavior.
   if (options.profile)
     user.profile = options.profile;
   return user;
 });
 
- 
+Meteor.methods({
+  UpdateUserRoomInfoToInside: function (roomID, roomTitle) {
+    Meteor.users.update( { _id:Meteor.userId() }, { $set:{ Room: {"inRoom":true , "inRoomID":roomID, "inRoomTitle":roomTitle} } } );
+    Rooms.update({_id:roomID},{$push:{peopleID:Meteor.userId() , peopleUsername:Meteor.user().username}});
+  },
+  UpdateUserRoomInfoToOutside: function (roomID) {
+    Meteor.users.update( { _id:Meteor.userId() }, { $set:{ Room:{"inRoomID":'', "inRoomTitle":'', "inRoom":false} } });
+    Rooms.update({_id:roomID},{$pull:{ peopleID:Meteor.userId(), peopleUsername:Meteor.user().username }});
+  }
+
+});

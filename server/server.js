@@ -26,6 +26,8 @@ Meteor.methods({
   UpdateUserRoomInfoToOutside: function (roomID) {
     Meteor.users.update( { _id:Meteor.userId() }, { $set:{ Room:{"inRoomID":'', "inRoomTitle":'', "inRoom":false} } });
     Rooms.update({_id:roomID},{$pull:{ peopleID:Meteor.userId(), peopleUsername:Meteor.user().username }});
+  },
+  DeleteRoom: function (roomID) {
+    Rooms.remove({_id:roomID});
   }
-
 });

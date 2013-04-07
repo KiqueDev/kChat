@@ -1,5 +1,6 @@
 <head>
   <title>kChat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 </head>
 
 <body>
@@ -106,10 +107,22 @@
               </div>
 
               <div class="span6">
-                <button id="joinRoom" class="btn btn-primary {{_id}}" roomId="{{_id}}" roomTitle="{{roomTitle}}" people="{{peopleUsername}}">Join</button>
-                <button class="btn btn-info {{_id}}" rel="tooltip" title="{{peopleUsername}}">Who?</button>
+                <button id="joinRoom" class="btn btn-primary" roomId="{{_id}}" roomTitle="{{roomTitle}}" people="{{peopleUsername}}">Join</button>
+                <button class="btn btn-info tooltip-{{_id}}" rel="tooltip" title="{{peopleUsername}}">Who's in?</button>
+                <button href="#deleteModal" id="deleteRoom" class="btn btn-danger delete-{{_id}}" roomId="{{_id}}">x</button>
               </div>
             </div>
+            <div id="deleteAlert" class="deleteAlert-{{_id}}" style="display: none;">
+              <div class="alert alert-block alert-error fade in">
+                <h4 class="alert-heading">Delete Room</h4>
+                <p>Are you sure you want to delete this room: <b>{{roomTitle}}</b>?</p>
+                <p>
+                  <a id="deleteConfirm" class="btn btn-danger" roomId="{{_id}}">Delete</a> 
+                  <a id="cancelDelete" class="btn" roomId="{{_id}}">Cancel</a>
+                </p>
+              </div>
+            </div>
+
             <br/>
           {{/each}}
         {{else}}

@@ -17,17 +17,13 @@ Template.room.user = function() {
   return Meteor.user();
 };
 
-Template.room.rID = function() {
-  return Session.get("rID");
-};
-
 Template.room.peopleInRoom = function() {
-  return  Rooms.findOne({_id:Session.get("rID")});;
+  return Rooms.findOne({_id:Meteor.user().Room.inRoomID});
 };
 
 Template.room.messageCount = function() {
   var messages = Messages.find({
-    rID:Session.get("rID")
+    rID:Meteor.user().Room.inRoomID
     //game_id: {$exists: false}
   });
   return messages;
@@ -98,18 +94,39 @@ $(document).on("click", "#joinRoom", function(event){
   var roomID= $(this).attr("roomId");
   var roomTitle= $(this).attr("roomTitle");
 
-  //SETTING rID
-  Session.set("rID",roomID);
-
   //UPDATE USER WHEN JOINED ROOM
   Meteor.call('UpdateUserRoomInfoToInside', roomID, roomTitle);
 });
 
+$(document).on("click", "#deleteRoom", function(event){
+  console.log('delete');
+
+  var roomID= $(this).attr("roomId");
+  console.log(roomID);
+  $(".deleteAlert-"+roomID).show('slow');
+});
+
+$(document).on("click", "#cancelDelete", function(event){
+  var roomID= $(this).attr("roomId");
+  console.log(roomID);
+  $(".deleteAlert-"+roomID).hide('slow');
+  //UPDATE USER WHEN JOINED ROOM
+  //Meteor.call('UpdateUserRoomInfoToInside', roomID, roomTitle);
+});
+
+$(document).on("click", "#deleteConfirm", function(event){
+  var roomID= $(this).attr("roomId");
+  console.log(roomID);
+  //DELETE ROOM
+  Meteor.call('DeleteRoom', roomID);
+});
+
 $(document).on("click", "#goout", function(event){
   console.log("goout");
+
   var roomID= $(this).attr("roomId");
   //console.log(roomID);
-  Meteor.call('UpdateUserRoomInfoToOutside', roomID);;
+  Meteor.call('UpdateUserRoomInfoToOutside', roomID);
 });
 
 Template.lobby.events({
@@ -131,18 +148,14 @@ Template.room.events({
     console.log("send clicked");
     var msg= $("#messageTextArea").val();
 
-    console.log(Session.get("rID"));
-    
     Messages.insert({
-      rID: Session.get("rID"),
+      rID: Meteor.user().Room.inRoomID,
       message:msg,
       userID:Meteor.userId(),
       username:Meteor.user().username,
       time:+(new Date())
     });
-  
-    
-    $("#msgLog").animate({ scrollTop: $('#msgLog')[0].scrollHeight}, 500);
+
     $("#messageTextArea").val('');
   },
   'keypress #messageTextArea': function(evt) {
@@ -155,17 +168,14 @@ Template.room.events({
         console.log("send clicked");
         var msg= $("#messageTextArea").val();
 
-        console.log(Session.get("rID"));
         Messages.insert({
-          rID: Session.get("rID"),
+          rID: Meteor.user().Room.inRoomID,
           message:msg,
           userID:Meteor.userId(),
           username:Meteor.user().username,
           time:+(new Date())
         });
-        
-        //Scroll the msglog All the way to the end
-        $("#msgLog").animate({ scrollTop: $('#msgLog')[0].scrollHeight}, 500);
+
         $("#messageTextArea").val('');
       }
       return false;
@@ -192,9 +202,24 @@ Template.lobby.rendered = function(){
     var room = Rooms.find({});
     room.forEach(function (room) {
       console.log("people: "+$('.'+room._id).attr("people"));
+      //$('.tooltip-'+room._id).tooltip('hide');
+      $('.tooltip-'+room._id).tooltip({trigger:'click'});
 
-      $('.'+room._id).tooltip('hide');
-
+      //DELETE BUTTON SHOW
+      if(room.createdByID === Meteor.userId()){
+        $('.delete-'+room._id).show();
+      }else{
+        $('.delete-'+room._id).hide();
+      }
     });
 }
 
+Template.room.rendered = function(){
+  console.log("rendered room");
+
+  //Scroll the msglog All the way to the end
+  var elem = document.getElementById('msgLog');
+  elem.scrollTop = elem.scrollHeight;
+
+
+}

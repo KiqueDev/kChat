@@ -80,9 +80,6 @@ body {
   float:right;
   width:30%;
 }
-#deleteRoom{
-  width:30%;
-}
 #roomsHeader{
   font-size:35px;
   float: left;
@@ -97,8 +94,4 @@ body {
   margin-bottom:10px;
   height:50px;
   width:80px;
-}
-
-#peopleInRoom{
-  display:none;
 }

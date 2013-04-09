@@ -5,19 +5,24 @@
 
 <body>
   {{>home}}
+  {{>loginModal}}
+</body>
 
-  <!-- LOGIN MODAL -->
+<template name="loginModal">
+    <!-- LOGIN MODAL -->
   <div id="loginModal" class="modal hide fade">
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       <h3>Login</h3>
     </div>
     <div class="modal-body">
-      <center>
+      <form id="formLoginUser">
+        <center>
         <input id="usernameLogin" type="text" placeholder="Username"><br/>
         <input id="passwordLogin" type="password" placeholder="Password"><br/>
         <div id="loginErroMsg"></div>
-      </center>
+        </center>
+      </form>
     </div>
     <div class="modal-footer">
       <center>
@@ -25,7 +30,7 @@
       </center>
     </div>
   </div>
-</body>
+</template>
 
 <template name="home">
     <!-- Part 1: Wrap all page content here -->
@@ -56,6 +61,7 @@
           {{/if}}
         {{else}}
           <div class="page-body">
+            <form id="formCreateUser">
               <center>
               <input id="username" type="text" placeholder="Username"><br/>
               <input id="password1" type="password" placeholder="Password"><br/>
@@ -63,7 +69,8 @@
               <div id="errorUsernameMsg">
               </div>
               <button id="chatnowBtn" class="btn btn-success">Chat Now!</button>
-            </center>
+              </center>
+            </form>
               <div class="well">
                 {{#if rooms.count}}
                   <h4>{{rooms.count}} Available Room Now</h4>
@@ -108,18 +115,18 @@
               </div>
 
               <div class="span6">
-                <button id="joinRoom" class="btn btn-primary" roomId="{{_id}}" roomTitle="{{roomTitle}}" people="{{peopleUsername}}">Join</button>
+                <button class="btn btn-primary joinRoom" roomId="{{_id}}" roomTitle="{{roomTitle}}" people="{{peopleUsername}}">Join</button>
                 <button class="btn btn-info tooltip-{{_id}}" rel="tooltip" title="{{peopleUsername}}">Who's in?</button>
-                <button href="#deleteModal" id="deleteRoom" class="btn btn-danger delete-{{_id}}" roomId="{{_id}}">x</button>
+                <button id="delete-{{_id}}" class="btn btn-danger deleteRoom" roomId="{{_id}}">x</button>
               </div>
             </div>
-            <div id="deleteAlert" class="deleteAlert-{{_id}}" style="display: none;">
+            <div id="deleteAlert-{{_id}}" class="deleteAlert" style="display: none;">
               <div class="alert alert-block alert-error fade in">
                 <h4 class="alert-heading">Delete Room</h4>
                 <p>Are you sure you want to delete this room: <b>{{roomTitle}}</b>?</p>
                 <p>
-                  <a id="deleteConfirm" class="btn btn-danger" roomId="{{_id}}">Delete</a> 
-                  <a id="cancelDelete" class="btn" roomId="{{_id}}">Cancel</a>
+                  <a class="btn btn-danger deleteConfirm" roomId="{{_id}}">Delete</a> 
+                  <a class="btn cancelDelete" roomId="{{_id}}">Cancel</a>
                 </p>
               </div>
             </div>
@@ -140,7 +147,7 @@
     
     <div>
       <div id="roomsHeader"><b>{{user.Room.inRoomTitle}}</b></div>
-      <button id="goout" class="btn btn-danger" roomId="{{user.Room.inRoomID}}">Exit Room</button>
+      <button id="exitRoom" class="btn btn-danger" roomId="{{user.Room.inRoomID}}">Exit Room</button>
       
     </div>
 

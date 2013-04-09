@@ -5,6 +5,26 @@
 
 <body>
   {{>home}}
+
+  <!-- LOGIN MODAL -->
+  <div id="loginModal" class="modal hide fade">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h3>Login</h3>
+    </div>
+    <div class="modal-body">
+      <center>
+        <input id="usernameLogin" type="text" placeholder="Username"><br/>
+        <input id="passwordLogin" type="password" placeholder="Password"><br/>
+        <div id="loginErroMsg"></div>
+      </center>
+    </div>
+    <div class="modal-footer">
+      <center>
+        <button id="chatnowLoginBtn" class="btn btn-success">Chat Now!</button>
+      </center>
+    </div>
+  </div>
 </body>
 
 <template name="home">
@@ -23,25 +43,6 @@
               <button id="logoutBtn" class="btn btn-inverse">Good Bye!</button>
             {{else}}
               <a href="#loginModal" role="button" class="btn btn-primary" data-toggle="modal">Hello!</a>
-              <div id="loginModal" class="modal hide fade">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                  <h3>Login</h3>
-                </div>
-                <div class="modal-body">
-                  <center>
-                    <input id="usernameLogin" type="text" placeholder="Username"><br/>
-                    <input id="passwordLogin" type="password" placeholder="Password"><br/>
-                    <div id="loginErroMsg"></div>
-                  </center>
-                </div>
-                <div class="modal-footer">
-                  <center>
-                    <button id="chatnowLoginBtn" class="btn btn-success">Chat Now!</button>
-                  </center>
-                </div>
-
-              </div>
             {{/if}}
 
         </div>
@@ -58,7 +59,7 @@
               <center>
               <input id="username" type="text" placeholder="Username"><br/>
               <input id="password1" type="password" placeholder="Password"><br/>
-              <input id="password2" type="password" placeholder="Conrfirm Password"><br/>
+              <input id="password2" type="password" placeholder="Confirm Password"><br/>
               <div id="errorUsernameMsg">
               </div>
               <button id="chatnowBtn" class="btn btn-success">Chat Now!</button>

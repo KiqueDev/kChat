@@ -61,7 +61,13 @@ Template.home.events({
       //alert('Must Contain At least 5 Characters');
     }
   },
-  'click #chatnowLoginBtn': function(evt) {
+  'click #logoutBtn': function(evt) {
+    Meteor.logout();
+  }
+});
+
+//EVENTS HANDLERS BUTTON
+$(document).on("click", "#chatnowLoginBtn", function(event){
     var username = $("#usernameLogin").val().trim();
     var password = $("#passwordLogin").val().trim();
     Meteor.loginWithPassword(username, password,
@@ -80,14 +86,9 @@ Template.home.events({
           $("#loginErroMsg").text('');
         }
 
-      });
-  },  
-  'click #logoutBtn': function(evt) {
-    Meteor.logout();
-  }
+    });
 });
 
-//EVENTS HANDLERS BUTTON
 $(document).on("click", "#joinRoom", function(event){
   console.log('join');
 

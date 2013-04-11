@@ -1,14 +1,14 @@
 //HOME TEMPLATE
 Template.home.rooms = function() {
-  var rooms = Rooms.find({
-    roomTitle: {
-      $ne: ''
-    }
-  });
-  return rooms;
+  return Rooms.find({ roomTitle: {$ne: ''} });
 };
+
 Template.home.user = function() {
   return Meteor.user();
+};
+
+Template.home.usersOnline = function() {
+  return Meteor.users.find({Online:true});
 };
 
 
@@ -22,24 +22,17 @@ Template.room.peopleInRoom = function() {
 };
 
 Template.room.messageCount = function() {
-  var messages = Messages.find({
-    rID:Meteor.user().Room.inRoomID
-    //game_id: {$exists: false}
-  });
-  return messages;
+  return Messages.find({rID:Meteor.user().Room.inRoomID});
 };
 
 
 //LOBBY TEMPLATE
 Template.lobby.rooms = function() {
-  var rooms = Rooms.find({
-    roomTitle: {
-      $ne: ''
-    }
-  });
-  return rooms;
+  return Rooms.find({ roomTitle: { $ne: ''} });
 };
-
+Template.lobby.usersOnline = function() {
+  return Meteor.users.find({Online:true});
+};
 
 //EVENTS HANDLERS BUTTON
 Template.home.events({
@@ -47,6 +40,8 @@ Template.home.events({
     CreateUser();
   },
   'click #logoutBtn': function(evt) {
+    //UPDATE USER COLLECTION ONLINE FALSE
+    Meteor.call('UpdateOnlineFalse');
     Meteor.logout();
   },
   'keypress #formCreateUser': function(evt) {
@@ -114,7 +109,7 @@ Template.room.events({
       message:msg,
       userID:Meteor.userId(),
       username:Meteor.user().username,
-      time:+(new Date())
+      time:getFormattedDate()
     });
 
     $("#messageTextArea").val('');
@@ -133,7 +128,7 @@ Template.room.events({
           message:msg,
           userID:Meteor.userId(),
           username:Meteor.user().username,
-          time:+(new Date())
+          time:getFormattedDate()
         });
 
         $("#messageTextArea").val('');
@@ -150,20 +145,20 @@ Template.room.events({
 
 //FUNCTIONS
 function CreateUser(){
+  console.log("called");
   var user = $("#username").val().trim();
   var password1 = $("#password1").val().trim();
   var password2 = $("#password2").val().trim();
-  if(user.length > 5 && user.length !== 0 && password1 === password2 && password1.length !=0){
+  if(user.length >= 5 && user.length !== 0 && password1 === password2 && password1.length !=0){
     Accounts.createUser({username:user, password:password1}, function(error){
       if(error){
         $("#errorUsernameMsg").text('User Already Exist');
       }
     });
-
   }else{
     $("#errorUsernameMsg").text('Username Must Contain At least 5 Characters');
         //alert('Must Contain At least 5 Characters');
-    }
+  }
 }
 
 function LoginUser(){
@@ -176,8 +171,8 @@ function LoginUser(){
       $("#loginErroMsg").text('Warning: Incorrect Login');
     }else{
 
-      // //PUT BOOLEAN FOR EACH OWNER ROOMS
-      // Meteor.call('SetupOwnerRooms');
+      //UPDATE USER COLLECTION ONLINE TRUE
+      Meteor.call('UpdateOnlineTrue');
 
       $('#loginModal').modal('hide');
       $('#usernameLogin').val('');
@@ -197,6 +192,13 @@ function CreateRoom(){
   }else{
     $("#createRoomErroMsg").text('Please Fill in Field (Must contain at LEAST 4 and at MOST 16 Characters');
   }
+}
+
+function getFormattedDate() {
+    var date = new Date();
+    var str = date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + " " +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+
+    return str;
 }
 
 Meteor.startup(function() {

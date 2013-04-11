@@ -9,9 +9,11 @@ Meteor.publish("users", function() {
   return Meteor.users.find({}, {fields: {}});
 });
 
+
 Accounts.onCreateUser(function(options, user) {
   
   user.Room = {"inRoom":false, "inRoomID":"", "inRoomTitle":""};
+  user.Online = true;
   // We still want the default hook's 'profile' behavior.
   if (options.profile)
     user.profile = options.profile;
@@ -29,5 +31,11 @@ Meteor.methods({
   },
   DeleteRoom: function (roomID) {
     Rooms.remove({_id:roomID});
+  },
+  UpdateOnlineFalse: function () {
+    Meteor.users.update( { _id:Meteor.userId() }, { $set:{ Online:false } });
+  },
+  UpdateOnlineTrue: function () {
+    Meteor.users.update( { _id:Meteor.userId() }, { $set:{ Online:true } });
   }
 });

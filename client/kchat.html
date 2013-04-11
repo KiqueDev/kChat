@@ -44,12 +44,25 @@
             <h4>"You Won't Feel Lonely Anymore!"</h4>
 
             {{#if currentUser}}
-              {{user.username}}
+              <h6>Username: <i>{{user.username}}</i></h6>
               <button id="logoutBtn" class="btn btn-inverse">Good Bye!</button>
             {{else}}
-              <a href="#loginModal" role="button" class="btn btn-primary" data-toggle="modal">Hello!</a>
+              <button href="#loginModal" class="btn btn-primary" data-toggle="modal">Hello!</button>
             {{/if}}
-
+            <div class="btn-group" id="userOnlineDropdown">
+              <a class="btn btn-warning dropdown-toggle" data-toggle="dropdown" href="#">
+                Online Now?
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                {{#if usersOnline.count}}
+                  {{#each usersOnline }}
+                      <center>{{username}}</center>
+                  {{/each}}
+                {{/if}}
+                <!-- dropdown menu links -->
+              </ul>
+            </div>
         </div>
 
 
@@ -60,17 +73,16 @@
             {{>lobby}}
           {{/if}}
         {{else}}
-          <div class="page-body">
+          <div class="body-page">
+            <center>
             <form id="formCreateUser">
-              <center>
               <input id="username" type="text" placeholder="Username"><br/>
               <input id="password1" type="password" placeholder="Password"><br/>
               <input id="password2" type="password" placeholder="Confirm Password"><br/>
-              <div id="errorUsernameMsg">
-              </div>
-              <button id="chatnowBtn" class="btn btn-success">Chat Now!</button>
-              </center>
+              <div id="errorUsernameMsg"></div>
             </form>
+            <button id="chatnowBtn" class="btn btn-success">Chat Now!</button>
+            </center>
               <div class="well">
                 {{#if rooms.count}}
                   <h4>{{rooms.count}} Available Room Now</h4>
@@ -99,7 +111,6 @@
 </template>
 
 <template name="lobby">
-
   <center>
     <input id="roomTitleName" type="text" placeholder="Rooms Title" /><br/>
     <div id="createRoomErroMsg"></div>
@@ -125,8 +136,8 @@
                 <h4 class="alert-heading">Delete Room</h4>
                 <p>Are you sure you want to delete this room: <b>{{roomTitle}}</b>?</p>
                 <p>
-                  <a class="btn btn-danger deleteConfirm" roomId="{{_id}}">Delete</a> 
-                  <a class="btn cancelDelete" roomId="{{_id}}">Cancel</a>
+                  <button class="btn btn-danger deleteConfirm" roomId="{{_id}}">Delete</button> 
+                  <button class="btn cancelDelete" roomId="{{_id}}">Cancel</button>
                 </p>
               </div>
             </div>
@@ -137,8 +148,8 @@
           <h4>0 Available Room Now :(</h4>
         {{/if}}
     </div>
-
   </center>
+
 </template>
 
 <template name="room">
@@ -152,11 +163,11 @@
     </div>
 
     <div>
-      <div id="roomsChat"><b>Chatting With:  {{ peopleInRoom.peopleUsername }}</b></div>
+      <div id="roomsChat"><b>Chatting With:  <i>{{ peopleInRoom.peopleUsername }}</i></b></div>
      
       <div id="msgLog">
         {{#each messageCount}}
-          <pre><b>{{username}}</b>:   {{ message }}</pre>
+          <pre><b>{{username}} ({{time}})</b>:   {{ message }}</pre>
         {{/each}}
       </div>
 

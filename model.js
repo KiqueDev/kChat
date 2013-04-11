@@ -1,7 +1,6 @@
 ////////// Shared code (client and server) //////////
- Rooms = new Meteor.Collection('rooms');
- Messages = new Meteor.Collection('messages');
-
+Rooms = new Meteor.Collection('rooms');
+Messages = new Meteor.Collection('messages');
 
 if (Meteor.isServer) {
 	// Rooms.allow({
@@ -21,6 +20,8 @@ if (Meteor.isServer) {
 	// });
 
 	// Rooms.remove({});
+	// Messages.remove({});
+	// Meteor.users.remove({});
 
 
 }

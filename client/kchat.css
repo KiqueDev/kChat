@@ -51,10 +51,9 @@ body {
 /* Custom page CSS
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
-
 .container {
   width: auto;
-  max-width: 680px;
+  max-width:800px;
 }
 .container .credit {
   margin: 20px 0;
@@ -70,13 +69,13 @@ body {
   color: red;
 }
 .roomsDisplay{
-  max-width: 70%;
+  max-width: 90%;
 }
 .chatRoomDisplay{
   max-width: 90%;
 }
 
-#goout{
+#exitRoom{
   float:right;
   width:30%;
 }
@@ -94,4 +93,8 @@ body {
   margin-bottom:10px;
   height:50px;
   width:80px;
+}
+#userOnlineDropdown{
+  float: right;
+  padding-right:20px;
 }
